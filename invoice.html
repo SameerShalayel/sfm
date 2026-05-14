@@ -5,524 +5,359 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>فاتورة معدات حاسوب</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #1a237e;
+            --primary-light: #3949ab;
+            --accent: #ff6f00;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+            --border: #e0e0e0;
+            --text: #212121;
+            --text-light: #757575;
+            --success: #2e7d32;
+            --danger: #c62828;
+            --shadow: 0 4px 24px rgba(0,0,0,0.10);
+            --radius: 12px;
         }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 30px 15px;
+            padding: 24px 8px;
         }
-
         .invoice-container {
-            background: #fff;
-            width: 100%;
-            max-width: 900px;
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            max-width: 960px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             overflow: hidden;
         }
-
         .invoice-header {
-            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
             color: #fff;
-            padding: 30px 40px;
+            padding: 32px 36px 24px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            gap: 24px;
+            flex-wrap: wrap;
         }
-
-        .invoice-header h1 {
+        .invoice-header .logo-area h1 {
             font-size: 28px;
-            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
         }
-
-        .invoice-header .invoice-number {
-            font-size: 14px;
+        .invoice-header .logo-area p {
+            font-size: 13px;
             opacity: 0.85;
-            margin-top: 6px;
         }
-
-        .invoice-header .logo-area {
+        .invoice-header .invoice-meta {
             text-align: left;
-            font-size: 40px;
+            font-size: 14px;
+            line-height: 2;
+        }
+        .invoice-header .invoice-meta strong {
+            color: var(--accent);
         }
 
-        .invoice-body {
-            padding: 30px 40px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #1a73e8;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e8eaed;
-        }
-
-        .company-info {
+        .company-section {
+            padding: 24px 36px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            border-bottom: 2px solid var(--border);
         }
-
-        .form-group {
+        .field-group {
             display: flex;
             flex-direction: column;
+            gap: 4px;
         }
-
-        .form-group label {
-            font-size: 13px;
+        .field-group label {
+            font-size: 12px;
             font-weight: 600;
-            color: #555;
-            margin-bottom: 6px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            padding: 10px 14px;
-            border: 1.5px solid #ddd;
+        .field-group input {
+            padding: 10px 12px;
+            border: 1.5px solid var(--border);
             border-radius: 8px;
             font-size: 14px;
-            font-family: inherit;
             transition: border-color 0.2s;
+            background: #fafafa;
             direction: rtl;
         }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        .field-group input:focus {
             outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 0 0 3px rgba(26,115,232,0.12);
+            border-color: var(--primary-light);
+            background: #fff;
         }
 
-        .form-group.full-width {
-            grid-column: 1 / -1;
+        .table-section {
+            padding: 24px 36px;
         }
-
-        /* Items Table */
-        .items-section {
-            margin-bottom: 25px;
-        }
-
-        .items-table-wrapper {
-            overflow-x: auto;
-            border-radius: 8px;
-            border: 1.5px solid #e8eaed;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 650px;
-        }
-
-        thead {
-            background: #f8f9fa;
-        }
-
-        thead th {
-            padding: 12px 14px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #444;
-            text-align: center;
-            border-bottom: 2px solid #e8eaed;
-        }
-
-        thead th:first-child {
-            width: 40px;
-        }
-
-        tbody tr {
-            transition: background 0.15s;
-        }
-
-        tbody tr:hover {
-            background: #f8f9ff;
-        }
-
-        tbody td {
-            padding: 8px 10px;
-            text-align: center;
-            border-bottom: 1px solid #f0f0f0;
-            vertical-align: middle;
-        }
-
-        tbody td input,
-        tbody td select {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 13px;
-            font-family: inherit;
-            text-align: center;
-            direction: rtl;
-            transition: border-color 0.2s;
-        }
-
-        tbody td input:focus,
-        tbody td select:focus {
-            outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 0 0 2px rgba(26,115,232,0.10);
-        }
-
-        tbody td input[type="number"] {
-            -moz-appearance: textfield;
-        }
-
-        tbody td input[type="number"]::-webkit-outer-spin-button,
-        tbody td input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .total-cell {
-            font-weight: 700;
-            color: #1a73e8;
-            background: #f0f6ff;
-            min-width: 100px;
-        }
-
-        .row-num {
-            font-weight: 700;
-            color: #999;
-            font-size: 13px;
-        }
-
-        .btn-remove-row {
-            background: #ff4444;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 16px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s, transform 0.1s;
-        }
-
-        .btn-remove-row:hover {
-            background: #cc0000;
-            transform: scale(1.1);
-        }
-
-        .btn-add-row {
-            margin-top: 12px;
-            padding: 10px 24px;
-            background: #1a73e8;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-family: inherit;
-        }
-
-        .btn-add-row:hover {
-            background: #1557b0;
-        }
-
-        /* Totals Section */
-        .totals-section {
-            display: flex;
-            justify-content: flex-start;
-            margin-bottom: 30px;
-        }
-
-        .totals-box {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px 30px;
-            min-width: 300px;
-            border: 1.5px solid #e8eaed;
-        }
-
-        .totals-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
-        }
-
-        .totals-row.grand-total {
-            border-top: 2px solid #1a73e8;
-            margin-top: 8px;
-            padding-top: 12px;
+        .table-section h3 {
             font-size: 18px;
-            font-weight: 700;
-            color: #1a73e8;
-        }
-
-        .totals-row .label {
-            color: #666;
-        }
-
-        .totals-row .value {
-            font-weight: 600;
-        }
-
-        /* Notes */
-        .notes-section {
-            margin-bottom: 25px;
-        }
-
-        .notes-section textarea {
-            width: 100%;
-            height: 80px;
-            padding: 12px 14px;
-            border: 1.5px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: inherit;
-            resize: vertical;
-            direction: rtl;
-        }
-
-        .notes-section textarea:focus {
-            outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 0 0 3px rgba(26,115,232,0.12);
-        }
-
-        /* Action Buttons */
-        .actions {
+            color: var(--primary);
+            margin-bottom: 16px;
             display: flex;
-            gap: 12px;
-            justify-content: center;
-            padding: 25px 40px;
-            background: #f8f9fa;
-            border-top: 1px solid #e8eaed;
-        }
-
-        .btn {
-            padding: 12px 32px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
-            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
 
-        .btn-save {
-            background: #1a73e8;
+        .items-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .items-table thead th {
+            background: var(--primary);
             color: #fff;
+            padding: 12px 10px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .items-table tbody tr {
+            transition: background 0.15s;
+        }
+        .items-table tbody tr:hover {
+            background: #e8eaf6;
+        }
+        .items-table tbody tr:nth-child(even) {
+            background: #fafafa;
+        }
+        .items-table tbody tr:nth-child(even):hover {
+            background: #e8eaf6;
+        }
+        .items-table td {
+            padding: 8px 6px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+        .items-table td input,
+        .items-table td select {
+            width: 100%;
+            padding: 8px 6px;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+            background: #fff;
+            direction: rtl;
+        }
+        .items-table td input:focus,
+        .items-table td select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+        }
+        .items-table td input[type="number"] {
+            width: 90px;
+        }
+        .items-table .row-num {
+            font-weight: 700;
+            color: var(--primary);
+            width: 40px;
+        }
+        .items-table .line-total {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 14px;
+            min-width: 90px;
         }
 
-        .btn-save:hover {
-            background: #1557b0;
-            box-shadow: 0 4px 12px rgba(26,115,232,0.3);
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-success { background: var(--success); color: #fff; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-accent { background: var(--accent); color: #fff; }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        .btn-outline:hover { background: var(--primary); color: #fff; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; border-radius: 6px; }
+        .btn-remove {
+            background: #ffebee;
+            color: var(--danger);
+            border: 1px solid #ef9a9a;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-remove:hover { background: var(--danger); color: #fff; }
+
+        .actions-bar {
+            padding: 16px 36px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 2px solid var(--border);
         }
 
-        .btn-print {
-            background: #34a853;
-            color: #fff;
+        .totals-section {
+            padding: 24px 36px;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .totals-box {
+            background: linear-gradient(135deg, #e8eaf6, #f5f5f5);
+            border-radius: var(--radius);
+            padding: 24px 32px;
+            min-width: 320px;
+            border: 1.5px solid var(--border);
+        }
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        .totals-row.grand {
+            border-top: 2px solid var(--primary);
+            margin-top: 8px;
+            padding-top: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .totals-row input[type="number"] {
+            width: 80px;
+            padding: 6px 8px;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+            direction: ltr;
+        }
+        .totals-row input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-light);
         }
 
-        .btn-print:hover {
-            background: #2d8f47;
-            box-shadow: 0 4px 12px rgba(52,168,83,0.3);
+        .saved-invoices {
+            padding: 24px 36px;
+            border-top: 2px solid var(--border);
         }
-
-        .btn-clear {
-            background: #ea4335;
-            color: #fff;
+        .saved-invoices h3 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 16px;
         }
-
-        .btn-clear:hover {
-            background: #c5221f;
-            box-shadow: 0 4px 12px rgba(234,67,53,0.3);
+        .invoices-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
         }
-
-        .btn-export {
-            background: #f9ab00;
-            color: #fff;
+        .invoice-card {
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 16px;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        .btn-export:hover {
-            background: #e09600;
-            box-shadow: 0 4px 12px rgba(249,171,0,0.3);
+        .invoice-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 2px 12px rgba(26,35,126,0.1);
         }
+        .invoice-card .info { display: flex; flex-direction: column; gap: 2px; }
+        .invoice-card .info .name { font-weight: 600; font-size: 14px; }
+        .invoice-card .info .date { font-size: 12px; color: var(--text-light); }
+        .invoice-card .info .amount { font-size: 13px; color: var(--success); font-weight: 600; }
+        .invoice-card .card-actions { display: flex; gap: 6px; }
 
-        /* Toast notification */
         .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 24px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #333;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--primary);
             color: #fff;
             padding: 14px 28px;
             border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
-            z-index: 1000;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
         }
-
         .toast.show {
+            opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
 
-        .toast.success {
-            background: #34a853;
-        }
-
-        .toast.error {
-            background: #ea4335;
-        }
-
-        /* Saved invoices panel */
-        .saved-panel {
-            margin-top: 20px;
-            padding: 0 40px 30px;
-        }
-
-        .saved-list {
-            display: grid;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .saved-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f8f9fa;
-            padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px solid #e8eaed;
-            transition: background 0.15s;
-        }
-
-        .saved-item:hover {
-            background: #eef3ff;
-        }
-
-        .saved-item-info {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            font-size: 13px;
-        }
-
-        .saved-item-info .company {
-            font-weight: 700;
-            color: #333;
-        }
-
-        .saved-item-info .date {
-            color: #888;
-        }
-
-        .saved-item-info .total {
-            color: #1a73e8;
-            font-weight: 600;
-        }
-
-        .saved-item-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-sm {
-            padding: 6px 14px;
-            border: none;
-            border-radius: 6px;
+        .footer {
+            text-align: center;
+            padding: 20px;
             font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: inherit;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
         }
 
-        .btn-load {
-            background: #1a73e8;
-            color: #fff;
-        }
-
-        .btn-delete {
-            background: #ea4335;
-            color: #fff;
-        }
-
-        /* Print styles */
         @media print {
-            body {
-                background: #fff;
-                padding: 0;
-            }
-            .invoice-container {
-                box-shadow: none;
-                border-radius: 0;
-            }
-            .actions,
-            .btn-add-row,
-            .btn-remove-row,
-            .saved-panel,
-            .btn-sm {
-                display: none !important;
-            }
-            .invoice-header {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            tbody td input,
-            tbody td select {
+            body { background: #fff; padding: 0; }
+            .invoice-container { box-shadow: none; }
+            .actions-bar, .saved-invoices, .btn-remove, .footer, .toast { display: none !important; }
+            .items-table td input,
+            .items-table td select {
                 border: none;
                 background: transparent;
+                font-weight: 600;
             }
-            .form-group input,
-            .form-group textarea {
+            .field-group input {
                 border: none;
                 background: transparent;
+                font-weight: 600;
+            }
+            .totals-row input[type="number"] {
+                border: none;
+                background: transparent;
+                font-weight: 600;
             }
         }
 
         @media (max-width: 768px) {
-            .invoice-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 10px;
-                padding: 20px;
+            .invoice-header { flex-direction: column; padding: 24px 16px; }
+            .company-section, .table-section, .actions-bar, .totals-section, .saved-invoices {
+                padding-right: 16px;
+                padding-left: 16px;
             }
-            .invoice-body {
-                padding: 20px;
-            }
-            .company-info {
-                grid-template-columns: 1fr;
-            }
-            .actions {
-                flex-wrap: wrap;
-                padding: 20px;
-            }
-            .totals-box {
-                min-width: 100%;
-            }
+            .totals-box { min-width: 100%; }
+            .items-table { font-size: 12px; }
+            .items-table td input[type="number"] { width: 65px; }
         }
     </style>
 </head>
@@ -531,424 +366,450 @@
 <div class="invoice-container">
     <!-- Header -->
     <div class="invoice-header">
-        <div>
-            <h1>فاتورة معدات حاسوب</h1>
-            <div class="invoice-number">رقم الفاتورة: <span id="invoiceNumber">INV-001</span></div>
+        <div class="logo-area">
+            <h1>&#128187; فاتورة معدات حاسوب</h1>
+            <p>نظام إدارة فواتير المعدات الحاسوبية</p>
         </div>
-        <div class="logo-area">&#128187;</div>
-    </div>
-
-    <!-- Body -->
-    <div class="invoice-body">
-        <!-- Company Info -->
-        <div class="section-title">معلومات الشركة</div>
-        <div class="company-info">
-            <div class="form-group">
-                <label>اسم الشركة</label>
-                <input type="text" id="companyName" placeholder="أدخل اسم الشركة">
-            </div>
-            <div class="form-group">
-                <label>رقم الهاتف</label>
-                <input type="tel" id="companyPhone" placeholder="أدخل رقم الهاتف">
-            </div>
-            <div class="form-group">
-                <label>البريد الإلكتروني</label>
-                <input type="email" id="companyEmail" placeholder="أدخل البريد الإلكتروني" dir="ltr" style="text-align: right;">
-            </div>
-            <div class="form-group">
-                <label>التاريخ</label>
-                <input type="date" id="invoiceDate">
-            </div>
-            <div class="form-group full-width">
-                <label>العنوان</label>
-                <input type="text" id="companyAddress" placeholder="أدخل عنوان الشركة">
-            </div>
-        </div>
-
-        <!-- Items -->
-        <div class="items-section">
-            <div class="section-title">الأصناف والمعدات</div>
-            <div class="items-table-wrapper">
-                <table id="itemsTable">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>اسم الصنف</th>
-                            <th>الفئة</th>
-                            <th>الكمية</th>
-                            <th>سعر الوحدة</th>
-                            <th>الإجمالي</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="itemsBody">
-                        <!-- Rows will be added dynamically -->
-                    </tbody>
-                </table>
-            </div>
-            <button class="btn-add-row" onclick="addRow()">+ إضافة صنف جديد</button>
-        </div>
-
-        <!-- Totals -->
-        <div class="totals-section">
-            <div class="totals-box">
-                <div class="totals-row">
-                    <span class="label">المجموع الفرعي:</span>
-                    <span class="value" id="subtotal">0.00</span>
-                </div>
-                <div class="totals-row">
-                    <span class="label">الضريبة (<span id="taxRateDisplay">0</span>%):</span>
-                    <span class="value" id="taxAmount">0.00</span>
-                </div>
-                <div class="totals-row">
-                    <span class="label">الخصم:</span>
-                    <span class="value" id="discountAmount">0.00</span>
-                </div>
-                <div class="totals-row grand-total">
-                    <span class="label">الإجمالي الكلي:</span>
-                    <span class="value" id="grandTotal">0.00</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tax & Discount controls -->
-        <div class="company-info" style="margin-bottom: 20px;">
-            <div class="form-group">
-                <label>نسبة الضريبة (%)</label>
-                <input type="number" id="taxRate" value="0" min="0" max="100" step="0.5" oninput="calculateTotals()">
-            </div>
-            <div class="form-group">
-                <label>مبلغ الخصم</label>
-                <input type="number" id="discount" value="0" min="0" step="0.01" oninput="calculateTotals()">
-            </div>
-        </div>
-
-        <!-- Notes -->
-        <div class="notes-section">
-            <div class="section-title">ملاحظات</div>
-            <textarea id="notes" placeholder="أدخل أي ملاحظات إضافية..."></textarea>
+        <div class="invoice-meta">
+            <div>رقم الفاتورة: <strong id="invoiceNumber">INV-001</strong></div>
+            <div>التاريخ: <strong id="invoiceDate"></strong></div>
         </div>
     </div>
 
-    <!-- Actions -->
-    <div class="actions">
-        <button class="btn btn-save" onclick="saveInvoice()">
-            <span>&#128190;</span> حفظ الفاتورة
-        </button>
-        <button class="btn btn-print" onclick="window.print()">
-            <span>&#128424;</span> طباعة
-        </button>
-        <button class="btn btn-export" onclick="exportJSON()">
-            <span>&#128229;</span> تصدير JSON
-        </button>
-        <button class="btn btn-clear" onclick="clearForm()">
-            <span>&#128465;</span> مسح الكل
-        </button>
+    <!-- Company Info -->
+    <div class="company-section">
+        <div class="field-group">
+            <label>اسم الشركة</label>
+            <input type="text" id="companyName" placeholder="أدخل اسم الشركة">
+        </div>
+        <div class="field-group">
+            <label>رقم الهاتف</label>
+            <input type="tel" id="companyPhone" placeholder="مثال: 0599999999">
+        </div>
+        <div class="field-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="companyEmail" placeholder="example@company.com" dir="ltr">
+        </div>
+        <div class="field-group">
+            <label>العنوان</label>
+            <input type="text" id="companyAddress" placeholder="المدينة، الشارع، الرمز البريدي">
+        </div>
+        <div class="field-group">
+            <label>تاريخ الفاتورة</label>
+            <input type="date" id="invoiceDateInput">
+        </div>
+        <div class="field-group">
+            <label>رقم الفاتورة</label>
+            <input type="text" id="invoiceNumberInput" placeholder="INV-001">
+        </div>
+    </div>
+
+    <!-- Actions Bar -->
+    <div class="actions-bar">
+        <button class="btn btn-primary" onclick="addRow()">&#10010; إضافة صنف</button>
+        <button class="btn btn-success" onclick="saveInvoice()">&#128190; حفظ الفاتورة</button>
+        <button class="btn btn-accent" onclick="exportJSON()">&#128229; تصدير JSON</button>
+        <button class="btn btn-outline" onclick="printInvoice()">&#128424; طباعة</button>
+        <button class="btn btn-danger" onclick="clearInvoice()">&#128465; مسح الكل</button>
+    </div>
+
+    <!-- Items Table -->
+    <div class="table-section">
+        <h3>&#128230; جدول الأصناف</h3>
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>الفئة</th>
+                    <th>اسم الصنف</th>
+                    <th>الكمية</th>
+                    <th>سعر الوحدة</th>
+                    <th>الإجمالي</th>
+                    <th>حذف</th>
+                </tr>
+            </thead>
+            <tbody id="itemsBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Totals -->
+    <div class="totals-section">
+        <div class="totals-box">
+            <div class="totals-row">
+                <span>المجموع الفرعي:</span>
+                <span id="subtotal">0.00</span>
+            </div>
+            <div class="totals-row">
+                <span>الضريبة (%):</span>
+                <span style="display:flex;align-items:center;gap:6px;">
+                    <input type="number" id="taxRate" value="0" min="0" max="100" step="0.5" oninput="recalcTotals()">
+                    <span>%</span>
+                </span>
+            </div>
+            <div class="totals-row">
+                <span>مبلغ الضريبة:</span>
+                <span id="taxAmount">0.00</span>
+            </div>
+            <div class="totals-row">
+                <span>الخصم (%):</span>
+                <span style="display:flex;align-items:center;gap:6px;">
+                    <input type="number" id="discountRate" value="0" min="0" max="100" step="0.5" oninput="recalcTotals()">
+                    <span>%</span>
+                </span>
+            </div>
+            <div class="totals-row">
+                <span>مبلغ الخصم:</span>
+                <span id="discountAmount">0.00</span>
+            </div>
+            <div class="totals-row grand">
+                <span>الإجمالي الكلي:</span>
+                <span id="grandTotal">0.00</span>
+            </div>
+        </div>
     </div>
 
     <!-- Saved Invoices -->
-    <div class="saved-panel">
-        <div class="section-title">الفواتير المحفوظة</div>
-        <div class="saved-list" id="savedList">
-            <p style="color: #999; font-size: 13px;">لا توجد فواتير محفوظة</p>
+    <div class="saved-invoices">
+        <h3>&#128194; الفواتير المحفوظة</h3>
+        <div class="invoices-list" id="invoicesList">
+            <p style="color:#999;font-size:14px;">لا توجد فواتير محفوظة بعد.</p>
         </div>
+    </div>
+
+    <div class="footer">
+        &copy; <span id="footerYear"></span> نظام فواتير معدات الحاسوب — جميع الحقوق محفوظة
     </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-    let rowCount = 0;
+(function() {
+    'use strict';
 
-    const categories = [
-        'شاشة',
-        'لوحة مفاتيح',
-        'ماوس',
-        'طابعة',
-        'حاسوب محمول',
-        'حاسوب مكتبي',
-        'ذاكرة RAM',
-        'قرص صلب',
-        'SSD',
-        'كرت شاشة',
-        'معالج',
-        'لوحة أم',
-        'كابلات',
-        'سماعات',
-        'كاميرا ويب',
-        'راوتر',
-        'سويتش شبكة',
-        'UPS',
-        'أخرى'
+    var CATEGORIES = [
+        'شاشة', 'طابعة', 'لابتوب', 'ماوس', 'لوحة مفاتيح',
+        'كيس حاسوب', 'قرص صلب', 'ذاكرة RAM', 'كرت شاشة',
+        'سماعات', 'كاميرا ويب', 'ماسح ضوئي', 'UPS',
+        'راوتر', 'سويتش شبكة', 'كابلات', 'أخرى'
     ];
 
-    function init() {
-        // Set today's date
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('invoiceDate').value = today;
+    var STORAGE_KEY = 'pc_invoices';
 
-        // Generate invoice number
-        const invNum = 'INV-' + String(Date.now()).slice(-6);
-        document.getElementById('invoiceNumber').textContent = invNum;
+    // Initialize date
+    var today = new Date();
+    var dateStr = today.getFullYear() + '-' +
+        String(today.getMonth() + 1).padStart(2, '0') + '-' +
+        String(today.getDate()).padStart(2, '0');
+    document.getElementById('invoiceDateInput').value = dateStr;
+    document.getElementById('invoiceDate').textContent = today.toLocaleDateString('ar-EG');
+    document.getElementById('footerYear').textContent = today.getFullYear();
 
-        // Add 3 initial rows
-        for (let i = 0; i < 3; i++) {
-            addRow();
+    // Generate invoice number
+    var savedInvoices = loadAllInvoices();
+    var nextNum = savedInvoices.length + 1;
+    document.getElementById('invoiceNumberInput').value = 'INV-' + String(nextNum).padStart(3, '0');
+    document.getElementById('invoiceNumber').textContent = 'INV-' + String(nextNum).padStart(3, '0');
+
+    // Sync invoice number display
+    document.getElementById('invoiceNumberInput').addEventListener('input', function() {
+        document.getElementById('invoiceNumber').textContent = this.value || 'INV-001';
+    });
+
+    // Sync invoice date display
+    document.getElementById('invoiceDateInput').addEventListener('input', function() {
+        if (this.value) {
+            var d = new Date(this.value);
+            document.getElementById('invoiceDate').textContent = d.toLocaleDateString('ar-EG');
         }
+    });
 
-        // Load saved invoices
-        renderSavedList();
-    }
+    // Add initial row
+    addRow();
+
+    // Load saved invoices list
+    renderSavedInvoices();
+
+    // ── Row Management ──
 
     function addRow() {
-        rowCount++;
-        const tbody = document.getElementById('itemsBody');
-        const tr = document.createElement('tr');
-        tr.id = 'row-' + rowCount;
+        var tbody = document.getElementById('itemsBody');
+        var tr = document.createElement('tr');
+        var rowIndex = tbody.rows.length + 1;
 
-        let categoryOptions = '<option value="">-- اختر الفئة --</option>';
-        categories.forEach(cat => {
-            categoryOptions += '<option value="' + cat + '">' + cat + '</option>';
-        });
+        var categoryOptions = '';
+        for (var i = 0; i < CATEGORIES.length; i++) {
+            categoryOptions += '<option value="' + CATEGORIES[i] + '">' + CATEGORIES[i] + '</option>';
+        }
 
         tr.innerHTML =
-            '<td class="row-num">' + rowCount + '</td>' +
-            '<td><input type="text" placeholder="اسم الصنف" class="item-name"></td>' +
-            '<td><select class="item-category">' + categoryOptions + '</select></td>' +
-            '<td><input type="number" min="1" value="1" class="item-qty" oninput="updateRowTotal(this)"></td>' +
-            '<td><input type="number" min="0" step="0.01" value="0" class="item-price" oninput="updateRowTotal(this)"></td>' +
-            '<td class="total-cell"><span class="row-total">0.00</span></td>' +
-            '<td><button class="btn-remove-row" onclick="removeRow(\'' + tr.id + '\')" title="حذف">&times;</button></td>';
+            '<td class="row-num">' + rowIndex + '</td>' +
+            '<td><select onchange="recalcTotals()">' + categoryOptions + '</select></td>' +
+            '<td><input type="text" placeholder="وصف الصنف"></td>' +
+            '<td><input type="number" value="1" min="1" step="1" oninput="recalcTotals()"></td>' +
+            '<td><input type="number" value="0" min="0" step="0.01" oninput="recalcTotals()"></td>' +
+            '<td class="line-total">0.00</td>' +
+            '<td><button class="btn-remove" onclick="removeRow(this)" title="حذف">&times;</button></td>';
 
         tbody.appendChild(tr);
+        recalcTotals();
     }
 
-    function removeRow(rowId) {
-        const row = document.getElementById(rowId);
-        if (row) {
-            row.remove();
-            renumberRows();
-            calculateTotals();
+    function removeRow(btn) {
+        var tbody = document.getElementById('itemsBody');
+        if (tbody.rows.length <= 1) {
+            showToast('يجب أن يحتوي الجدول على سطر واحد على الأقل');
+            return;
         }
+        var row = btn.closest('tr');
+        row.remove();
+        renumberRows();
+        recalcTotals();
     }
 
     function renumberRows() {
-        const rows = document.querySelectorAll('#itemsBody tr');
-        rows.forEach((row, index) => {
-            row.querySelector('.row-num').textContent = index + 1;
-        });
+        var tbody = document.getElementById('itemsBody');
+        for (var i = 0; i < tbody.rows.length; i++) {
+            tbody.rows[i].cells[0].textContent = i + 1;
+        }
     }
 
-    function updateRowTotal(input) {
-        const row = input.closest('tr');
-        const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-        const price = parseFloat(row.querySelector('.item-price').value) || 0;
-        const total = qty * price;
-        row.querySelector('.row-total').textContent = total.toFixed(2);
-        calculateTotals();
-    }
+    // ── Calculations ──
 
-    function calculateTotals() {
-        const rowTotals = document.querySelectorAll('.row-total');
-        let subtotal = 0;
-        rowTotals.forEach(el => {
-            subtotal += parseFloat(el.textContent) || 0;
-        });
+    function recalcTotals() {
+        var tbody = document.getElementById('itemsBody');
+        var subtotal = 0;
 
-        const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-        const discount = parseFloat(document.getElementById('discount').value) || 0;
-        const taxAmount = subtotal * (taxRate / 100);
-        const grandTotal = subtotal + taxAmount - discount;
+        for (var i = 0; i < tbody.rows.length; i++) {
+            var row = tbody.rows[i];
+            var qty = parseFloat(row.cells[3].querySelector('input').value) || 0;
+            var price = parseFloat(row.cells[4].querySelector('input').value) || 0;
+            var lineTotal = qty * price;
+            row.cells[5].textContent = lineTotal.toFixed(2);
+            subtotal += lineTotal;
+        }
+
+        var taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+        var discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
+
+        var taxAmount = subtotal * (taxRate / 100);
+        var discountAmount = subtotal * (discountRate / 100);
+        var grandTotal = subtotal + taxAmount - discountAmount;
 
         document.getElementById('subtotal').textContent = subtotal.toFixed(2);
-        document.getElementById('taxRateDisplay').textContent = taxRate;
         document.getElementById('taxAmount').textContent = taxAmount.toFixed(2);
-        document.getElementById('discountAmount').textContent = discount.toFixed(2);
-        document.getElementById('grandTotal').textContent = Math.max(0, grandTotal).toFixed(2);
+        document.getElementById('discountAmount').textContent = discountAmount.toFixed(2);
+        document.getElementById('grandTotal').textContent = grandTotal.toFixed(2);
     }
 
-    function getInvoiceData() {
-        const items = [];
-        const rows = document.querySelectorAll('#itemsBody tr');
-        rows.forEach(row => {
-            const name = row.querySelector('.item-name').value.trim();
-            const category = row.querySelector('.item-category').value;
-            const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-            const price = parseFloat(row.querySelector('.item-price').value) || 0;
-            if (name) {
-                items.push({ name, category, qty, price, total: qty * price });
-            }
-        });
+    // ── Save / Load ──
+
+    function gatherInvoiceData() {
+        var tbody = document.getElementById('itemsBody');
+        var items = [];
+        for (var i = 0; i < tbody.rows.length; i++) {
+            var row = tbody.rows[i];
+            items.push({
+                category: row.cells[1].querySelector('select').value,
+                name: row.cells[2].querySelector('input').value,
+                quantity: parseFloat(row.cells[3].querySelector('input').value) || 0,
+                unitPrice: parseFloat(row.cells[4].querySelector('input').value) || 0
+            });
+        }
 
         return {
-            invoiceNumber: document.getElementById('invoiceNumber').textContent,
-            companyName: document.getElementById('companyName').value.trim(),
-            companyPhone: document.getElementById('companyPhone').value.trim(),
-            companyEmail: document.getElementById('companyEmail').value.trim(),
-            companyAddress: document.getElementById('companyAddress').value.trim(),
-            date: document.getElementById('invoiceDate').value,
+            id: Date.now(),
+            invoiceNumber: document.getElementById('invoiceNumberInput').value,
+            date: document.getElementById('invoiceDateInput').value,
+            company: {
+                name: document.getElementById('companyName').value,
+                phone: document.getElementById('companyPhone').value,
+                email: document.getElementById('companyEmail').value,
+                address: document.getElementById('companyAddress').value
+            },
             items: items,
             taxRate: parseFloat(document.getElementById('taxRate').value) || 0,
-            discount: parseFloat(document.getElementById('discount').value) || 0,
-            subtotal: parseFloat(document.getElementById('subtotal').textContent) || 0,
-            taxAmount: parseFloat(document.getElementById('taxAmount').textContent) || 0,
-            grandTotal: parseFloat(document.getElementById('grandTotal').textContent) || 0,
-            notes: document.getElementById('notes').value.trim(),
-            savedAt: new Date().toISOString()
+            discountRate: parseFloat(document.getElementById('discountRate').value) || 0,
+            subtotal: document.getElementById('subtotal').textContent,
+            grandTotal: document.getElementById('grandTotal').textContent
         };
     }
 
     function saveInvoice() {
-        const data = getInvoiceData();
-
-        if (!data.companyName) {
-            showToast('يرجى إدخال اسم الشركة', 'error');
-            document.getElementById('companyName').focus();
+        var data = gatherInvoiceData();
+        if (!data.company.name) {
+            showToast('الرجاء إدخال اسم الشركة أولاً');
             return;
         }
-
         if (data.items.length === 0) {
-            showToast('يرجى إدخال صنف واحد على الأقل', 'error');
+            showToast('الرجاء إضافة صنف واحد على الأقل');
             return;
         }
 
-        let invoices = JSON.parse(localStorage.getItem('invoices') || '[]');
+        var invoices = loadAllInvoices();
         invoices.push(data);
-        localStorage.setItem('invoices', JSON.stringify(invoices));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(invoices));
+        renderSavedInvoices();
+        showToast('تم حفظ الفاتورة بنجاح');
 
-        showToast('تم حفظ الفاتورة بنجاح', 'success');
-        renderSavedList();
+        // Update invoice number for next
+        var nextNum = invoices.length + 1;
+        document.getElementById('invoiceNumberInput').value = 'INV-' + String(nextNum).padStart(3, '0');
+        document.getElementById('invoiceNumber').textContent = 'INV-' + String(nextNum).padStart(3, '0');
     }
 
-    function renderSavedList() {
-        const invoices = JSON.parse(localStorage.getItem('invoices') || '[]');
-        const container = document.getElementById('savedList');
+    function loadAllInvoices() {
+        try {
+            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function loadInvoice(id) {
+        var invoices = loadAllInvoices();
+        var inv = null;
+        for (var i = 0; i < invoices.length; i++) {
+            if (invoices[i].id === id) { inv = invoices[i]; break; }
+        }
+        if (!inv) return;
+
+        document.getElementById('companyName').value = inv.company.name || '';
+        document.getElementById('companyPhone').value = inv.company.phone || '';
+        document.getElementById('companyEmail').value = inv.company.email || '';
+        document.getElementById('companyAddress').value = inv.company.address || '';
+        document.getElementById('invoiceDateInput').value = inv.date || '';
+        document.getElementById('invoiceNumberInput').value = inv.invoiceNumber || '';
+        document.getElementById('invoiceNumber').textContent = inv.invoiceNumber || '';
+        document.getElementById('taxRate').value = inv.taxRate || 0;
+        document.getElementById('discountRate').value = inv.discountRate || 0;
+
+        if (inv.date) {
+            var d = new Date(inv.date);
+            document.getElementById('invoiceDate').textContent = d.toLocaleDateString('ar-EG');
+        }
+
+        // Rebuild items
+        var tbody = document.getElementById('itemsBody');
+        tbody.innerHTML = '';
+        for (var j = 0; j < inv.items.length; j++) {
+            addRow();
+            var row = tbody.rows[tbody.rows.length - 1];
+            var item = inv.items[j];
+            row.cells[1].querySelector('select').value = item.category;
+            row.cells[2].querySelector('input').value = item.name;
+            row.cells[3].querySelector('input').value = item.quantity;
+            row.cells[4].querySelector('input').value = item.unitPrice;
+        }
+        recalcTotals();
+        showToast('تم تحميل الفاتورة');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deleteInvoice(id) {
+        if (!confirm('هل أنت متأكد من حذف هذه الفاتورة؟')) return;
+        var invoices = loadAllInvoices();
+        var filtered = [];
+        for (var i = 0; i < invoices.length; i++) {
+            if (invoices[i].id !== id) filtered.push(invoices[i]);
+        }
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
+        renderSavedInvoices();
+        showToast('تم حذف الفاتورة');
+    }
+
+    function renderSavedInvoices() {
+        var container = document.getElementById('invoicesList');
+        var invoices = loadAllInvoices();
 
         if (invoices.length === 0) {
-            container.innerHTML = '<p style="color: #999; font-size: 13px;">لا توجد فواتير محفوظة</p>';
+            container.innerHTML = '<p style="color:#999;font-size:14px;">لا توجد فواتير محفوظة بعد.</p>';
             return;
         }
 
-        let html = '';
-        invoices.forEach((inv, index) => {
-            const date = new Date(inv.savedAt).toLocaleDateString('ar-EG');
-            html +=
-                '<div class="saved-item">' +
-                    '<div class="saved-item-info">' +
-                        '<span class="company">' + (inv.companyName || 'بدون اسم') + '</span>' +
-                        '<span class="date">' + date + '</span>' +
-                        '<span class="total">' + inv.grandTotal.toFixed(2) + '</span>' +
-                        '<span style="color:#888;">' + inv.invoiceNumber + '</span>' +
-                    '</div>' +
-                    '<div class="saved-item-actions">' +
-                        '<button class="btn-sm btn-load" onclick="loadInvoice(' + index + ')">تحميل</button>' +
-                        '<button class="btn-sm btn-delete" onclick="deleteInvoice(' + index + ')">حذف</button>' +
-                    '</div>' +
-                '</div>';
-        });
-
+        var html = '';
+        for (var i = 0; i < invoices.length; i++) {
+            var inv = invoices[i];
+            html += '<div class="invoice-card" onclick="loadInvoice(' + inv.id + ')">' +
+                '<div class="info">' +
+                    '<span class="name">' + escapeHtml(inv.company.name || 'بدون اسم') + '</span>' +
+                    '<span class="date">' + escapeHtml(inv.invoiceNumber || '') + ' — ' + escapeHtml(inv.date || '') + '</span>' +
+                    '<span class="amount">الإجمالي: ' + escapeHtml(inv.grandTotal || '0') + '</span>' +
+                '</div>' +
+                '<div class="card-actions">' +
+                    '<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteInvoice(' + inv.id + ')">حذف</button>' +
+                '</div>' +
+            '</div>';
+        }
         container.innerHTML = html;
     }
 
-    function loadInvoice(index) {
-        const invoices = JSON.parse(localStorage.getItem('invoices') || '[]');
-        const inv = invoices[index];
-        if (!inv) return;
+    // ── Export / Print ──
 
-        document.getElementById('invoiceNumber').textContent = inv.invoiceNumber;
-        document.getElementById('companyName').value = inv.companyName || '';
-        document.getElementById('companyPhone').value = inv.companyPhone || '';
-        document.getElementById('companyEmail').value = inv.companyEmail || '';
-        document.getElementById('companyAddress').value = inv.companyAddress || '';
-        document.getElementById('invoiceDate').value = inv.date || '';
-        document.getElementById('taxRate').value = inv.taxRate || 0;
-        document.getElementById('discount').value = inv.discount || 0;
-        document.getElementById('notes').value = inv.notes || '';
-
-        // Rebuild items
-        const tbody = document.getElementById('itemsBody');
-        tbody.innerHTML = '';
-        rowCount = 0;
-
-        if (inv.items && inv.items.length > 0) {
-            inv.items.forEach(item => {
-                addRow();
-                const row = tbody.lastElementChild;
-                row.querySelector('.item-name').value = item.name;
-                row.querySelector('.item-category').value = item.category;
-                row.querySelector('.item-qty').value = item.qty;
-                row.querySelector('.item-price').value = item.price;
-                row.querySelector('.row-total').textContent = item.total.toFixed(2);
-            });
-        } else {
-            addRow();
-        }
-
-        calculateTotals();
-        showToast('تم تحميل الفاتورة', 'success');
+    function exportJSON() {
+        var data = gatherInvoiceData();
+        var json = JSON.stringify(data, null, 2);
+        var blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = (data.invoiceNumber || 'invoice') + '.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('تم تصدير الفاتورة بصيغة JSON');
     }
 
-    function deleteInvoice(index) {
-        if (!confirm('هل أنت متأكد من حذف هذه الفاتورة؟')) return;
-        let invoices = JSON.parse(localStorage.getItem('invoices') || '[]');
-        invoices.splice(index, 1);
-        localStorage.setItem('invoices', JSON.stringify(invoices));
-        renderSavedList();
-        showToast('تم حذف الفاتورة', 'success');
+    function printInvoice() {
+        window.print();
     }
 
-    function clearForm() {
+    function clearInvoice() {
         if (!confirm('هل أنت متأكد من مسح جميع البيانات؟')) return;
-
         document.getElementById('companyName').value = '';
         document.getElementById('companyPhone').value = '';
         document.getElementById('companyEmail').value = '';
         document.getElementById('companyAddress').value = '';
         document.getElementById('taxRate').value = 0;
-        document.getElementById('discount').value = 0;
-        document.getElementById('notes').value = '';
+        document.getElementById('discountRate').value = 0;
 
-        const invNum = 'INV-' + String(Date.now()).slice(-6);
-        document.getElementById('invoiceNumber').textContent = invNum;
-
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('invoiceDate').value = today;
-
-        const tbody = document.getElementById('itemsBody');
+        var tbody = document.getElementById('itemsBody');
         tbody.innerHTML = '';
-        rowCount = 0;
-        for (let i = 0; i < 3; i++) {
-            addRow();
-        }
-        calculateTotals();
-        showToast('تم مسح جميع البيانات', 'success');
+        addRow();
+        recalcTotals();
+        showToast('تم مسح جميع البيانات');
     }
 
-    function exportJSON() {
-        const data = getInvoiceData();
-        const json = JSON.stringify(data, null, 2);
-        const blob = new Blob([json], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = data.invoiceNumber + '.json';
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast('تم تصدير الفاتورة كملف JSON', 'success');
+    // ── Utility ──
+
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
     }
 
-    function showToast(message, type) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = 'toast ' + type + ' show';
-        setTimeout(() => {
+    function showToast(msg) {
+        var toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(function() {
             toast.classList.remove('show');
-        }, 3000);
+        }, 2500);
     }
 
-    // Initialize
-    init();
+    // Expose functions globally
+    window.addRow = addRow;
+    window.removeRow = removeRow;
+    window.recalcTotals = recalcTotals;
+    window.saveInvoice = saveInvoice;
+    window.loadInvoice = loadInvoice;
+    window.deleteInvoice = deleteInvoice;
+    window.exportJSON = exportJSON;
+    window.printInvoice = printInvoice;
+    window.clearInvoice = clearInvoice;
+
+})();
 </script>
 
 </body>
